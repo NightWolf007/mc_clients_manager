@@ -29,13 +29,13 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-config :exredis,
-       url: System.get_env("REDIS_URL") || "redis://127.0.0.1:6379/0"
+# config :exredis,
+#        url: System.get_env("REDIS_URL") || "redis://127.0.0.1:6379/0"
 
-config :nekto_client,
-       host: "nekto.me",
-       ws_host: "chat.nekto.me",
-       ws_path: "/websocket"
+# config :nekto_client,
+#        host: "nekto.me",
+#        ws_host: "chat.nekto.me",
+#        ws_path: "/websocket"
 
-config :clients_manager,
-       namespace: "cmanager"
+# config :clients_manager,
+#        namespace: "cmanager"
