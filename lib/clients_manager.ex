@@ -52,7 +52,7 @@ defmodule ClientsManager do
   @doc """
   Sends message to client
   """
-  @spec send(client_id, String.t) :: :ok
+  @spec send(client_id, String.t) :: :ok | :error
   def send(client_id, message) do
     case Table.find(:clients, client_id) do
       {:ok, {client}} ->
