@@ -14,10 +14,8 @@ defmodule ClientsManager do
   """
   @spec create(pid, client_type) :: {:ok, client_id}
   def create(supervisor, type) do
-    client = Manager.connect!(type)
-    client_id = Table.insert(:clients, {client})
+    client_id = Table.insert(:clients, {Manager.new(type)})
     ClientsManager.Supervisor.start_client(supervisor, client_id)
-    Table.update(:clients, client_id, {Manager.prepare!(client)})
     {:ok, client_id}
   end
 

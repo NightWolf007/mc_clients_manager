@@ -7,13 +7,15 @@ defmodule ClientsManager.Client.Supervisor do
 
   alias ClientsManager.Client.Manager
   alias ClientsManager.Client.Handler
+  alias ClientsManager.Table
 
   @doc """
   Starts supervisor
   """
-  @spec start_link(integer, Map.t) :: {:ok, pid}
-  def start_link(client_id, client) do
-    {:ok, pid} = Supervisor.start_link(__MODULE__, [])
+  @spec start_link(integer) :: {:ok, pid}
+  def start_link(client_id) do
+    {:ok, {client}} = Table.find(:clients, client_id)
+    {:ok, pid} = Supervisor.start_link(__MODULE__, {client_id, client})
     start_receiver(pid, client_id, client)
     {:ok, pid}
   end
@@ -62,11 +64,13 @@ defmodule ClientsManager.Client.Supervisor do
     |> List.keyfind(child_id, 0)
   end
 
-  def init([]) do
+  def init({client_id, client}) do
     children = [
       worker(GenEvent, [], id: :gen_event),
       worker(Exredis, [], id: :redis_client)
     ]
+    Table.update(:clients, client_id,
+                 {client |> Manager.connect! |> Manager.prepare!})
     supervise(children, strategy: :one_for_all)
   end
 

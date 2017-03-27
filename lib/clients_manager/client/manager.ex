@@ -8,15 +8,21 @@ defmodule ClientsManager.Client.Manager do
   alias ClientsManager.Client.Client
 
   @doc """
+  Initializes client
+  """
+  def new(type) do
+    %Client{type: type}
+  end
+
+  @doc """
   Provides actions for client connection
   Returns client
   """
-  @spec connect!(type) :: %ClientsManager.Client.Client{}
-  def connect!(type) do
-    %Client{
-      type: type,
-      data: Client.which_module(type, Manager).connect!
-    }
+  @spec connect!(%ClientsManager.Client.Client{}) ::
+        %ClientsManager.Client.Client{}
+  def connect!(%{type: type} = client) do
+    client
+    |> Map.put(:data, Client.which_module(type, Manager).connect!)
   end
 
   @doc """

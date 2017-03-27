@@ -44,10 +44,9 @@ defmodule ClientsManager.Supervisor do
   """
   @spec start_client(pid, client_id) :: Supervisor.on_start_child
   def start_client(supervisor, client_id) do
-    {:ok, {client}} = Table.find(:clients, client_id)
     Supervisor.start_child(
       supervisor,
-      supervisor(Client.Supervisor, [client_id, client], id: client_id)
+      supervisor(Client.Supervisor, [client_id], id: client_id)
     )
   end
 
