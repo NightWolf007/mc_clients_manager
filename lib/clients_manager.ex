@@ -68,4 +68,15 @@ defmodule ClientsManager do
   def clients do
     Table.map(:clients, fn(id, {client}) -> {id, client} end)
   end
+
+  @doc """
+  Returns client by id
+  """
+  @spec client(client_id) :: %ClientsManager.Client.Client{}
+  def client(client_id) do
+    case Table.find(:clients, client_id) do
+      {:ok, {client}} -> client
+      _ -> {:error}
+    end
+  end
 end
