@@ -38,7 +38,7 @@ defmodule ClientsManager.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:nekto_client, git: "https://github.com/alchemys-team/nekto_client_ex.git"},
+      {:nekto_client, git: "https://github.com/alchemys-team/nekto_client_ex.git", tag: "0.1.0"},
       {:poison, "~> 3.0"},
       {:exredis, "~> 0.2.5"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
