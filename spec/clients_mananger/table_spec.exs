@@ -142,4 +142,27 @@ defmodule ClientsManager.TableSpec do
       Agent.stop(agent)
     end
   end
+
+  describe "map/2" do
+    let :data1, do: "data1"
+    let! :id1, do: described_module().insert(table(), {data1()})
+    let :data2, do: "data2"
+    let! :id2, do: described_module().insert(table(), {data2()})
+    let :data3, do: "data3"
+    let! :id3, do: described_module().insert(table(), {data3()})
+
+    it "map over table" do
+      list = described_module().map(
+        table(),
+        fn(id, {data}) -> {id, data} end
+      )
+      expect list |> to(eq(
+        [
+          {id1(), data1()},
+          {id2(), data2()},
+          {id3(), data3()},
+        ]
+      ))
+    end
+  end
 end
