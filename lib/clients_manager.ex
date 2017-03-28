@@ -60,4 +60,12 @@ defmodule ClientsManager do
         :error
     end
   end
+
+  @doc """
+  Returns all clients
+  """
+  @spec clients() :: list({client_id, %ClientsManager.Client.Client{}})
+  def clients do
+    Table.map(:clients, fn(id, {client}) -> {id, client} end)
+  end
 end

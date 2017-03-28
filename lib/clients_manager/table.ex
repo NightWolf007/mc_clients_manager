@@ -92,6 +92,25 @@ defmodule ClientsManager.Table do
     )
   end
 
+  @doc """
+  Map row in table with given function
+  """
+  @spec map(t, (integer, Tuple.t -> any)) :: list(any)
+  def map(table, fun) do
+    :ets.foldr(
+      fn(row, acc) ->
+        id = elem(row, 0)
+        if id != :system do
+          [fun.(id, Tuple.delete_at(row, 0)) | acc]
+        else
+          acc
+        end
+      end,
+      [],
+      table
+    )
+  end
+
   defp next_id(table) do
     :ets.update_counter(table, :system, 1)
   end
