@@ -75,7 +75,7 @@ defmodule ClientsManager do
   @spec client(client_id) :: %ClientsManager.Client.Client{}
   def client(client_id) do
     case Table.find(:clients, client_id) do
-      {:ok, {client}} -> client
+      {:ok, {client}} -> {:ok, client}
       _ -> {:error}
     end
   end
