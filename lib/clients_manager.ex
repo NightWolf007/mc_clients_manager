@@ -8,6 +8,7 @@ defmodule ClientsManager do
 
   alias ClientsManager.Table
   alias ClientsManager.Client.Manager
+  alias ClientsManager.Client.Client
 
   @doc """
   Creates new client
@@ -59,6 +60,21 @@ defmodule ClientsManager do
       _ ->
         :error
     end
+  end
+
+  @doc """
+  Sends message to all clients except the clients in list
+  """
+  @spec send_broadcast(Stringt.t, list(client_id)) :: :ok
+  def send_broadcast(message, excepted \\ []) do
+    Table.each(:clients,
+      fn
+        (id, {client}) ->
+          if !Enum.member?(excepted, id) && Client.found?(client) do
+            Table.update(:clients, id, {Manager.send!(client, message)})
+          end
+      end
+    )
   end
 
   @doc """

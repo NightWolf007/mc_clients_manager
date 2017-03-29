@@ -16,7 +16,7 @@ defmodule ClientsManager.Forwarder do
       fn
         (id, {client}) when id != client_id ->
           if Client.found?(client) do
-            Table.update(:clients, client_id, {Manager.send!(client, message)})
+            Table.update(:clients, id, {Manager.send!(client, message)})
           end
         (_, _) -> nil
       end
