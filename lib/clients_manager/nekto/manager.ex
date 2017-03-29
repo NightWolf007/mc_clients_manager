@@ -24,14 +24,10 @@ defmodule ClientsManager.Nekto.Manager do
   """
   @spec prepare!(%ClientsManager.Nekto.Client{}) ::
         %ClientsManager.Nekto.Client{}
-  def prepare!(%{socket: socket}) do
+  def prepare!(%{socket: socket} = client) do
     token = NektoClient.chat_token!
     Sender.auth!(socket, token)
-    %Client{
-      socket: socket,
-      token: token,
-      search_options: default_search_options()
-    }
+    Map.merge(client, %{token: token, search_options: default_search_options()})
   end
 
   @doc """

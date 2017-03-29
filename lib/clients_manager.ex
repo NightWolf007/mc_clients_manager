@@ -79,4 +79,19 @@ defmodule ClientsManager do
       _ -> {:error}
     end
   end
+
+  @doc """
+  Reconnects clients
+  """
+  @spec reconnect(pid, client_id) :: :ok | :error
+  def reconnect(supervisor, client_id) do
+    case Table.find(:clients, client_id) do
+      {:ok, {_client}} ->
+        ClientsManager.Supervisor.stop_client(supervisor, client_id)
+        ClientsManager.Supervisor.start_client(supervisor, client_id)
+        :ok
+      _ ->
+        :error
+    end
+  end
 end
