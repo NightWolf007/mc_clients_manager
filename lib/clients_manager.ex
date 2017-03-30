@@ -75,6 +75,7 @@ defmodule ClientsManager do
           end
       end
     )
+    :ok
   end
 
   @doc """
@@ -105,6 +106,34 @@ defmodule ClientsManager do
       {:ok, {_client}} ->
         ClientsManager.Supervisor.stop_client(supervisor, client_id)
         ClientsManager.Supervisor.start_client(supervisor, client_id)
+        :ok
+      _ ->
+        :error
+    end
+  end
+
+  @doc """
+  Mutes client
+  """
+  @spec mute(client_id) :: :ok | :error
+  def mute(client_id) do
+    case Table.find(:clients, client_id) do
+      {:ok, {client}} ->
+        Table.update(:clients, client_id, {Manager.mute(client)})
+        :ok
+      _ ->
+        :error
+    end
+  end
+
+  @doc """
+  Unmutes client
+  """
+  @spec unmute(client_id) :: :ok | :error
+  def unmute(client_id) do
+    case Table.find(:clients, client_id) do
+      {:ok, {client}} ->
+        Table.update(:clients, client_id, {Manager.unmute(client)})
         :ok
       _ ->
         :error

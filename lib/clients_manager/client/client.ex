@@ -5,7 +5,7 @@ defmodule ClientsManager.Client.Client do
 
   alias ClientsManager.Nekto
 
-  defstruct [:type, :data]
+  defstruct [:type, :data, muted: false]
 
   @doc """
   Checks client on found
@@ -13,6 +13,14 @@ defmodule ClientsManager.Client.Client do
   @spec found?(%ClientsManager.Client.Client{}) :: boolean
   def found?(%{type: type, data: data}) do
     which_module(type, Client).found?(data)
+  end
+
+  @doc """
+  Checks if client muted
+  """
+  @spec muted?(%ClientsManager.Client.Client{}) :: boolean
+  def muted?(%{muted: muted}) do
+    muted
   end
 
   @doc """

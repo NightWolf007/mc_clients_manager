@@ -87,4 +87,21 @@ defmodule ClientsManager.Client.Manager do
   def listen!(%{data: data, type: type}, gen_event) do
     Client.which_module(type, Manager).listen!(data, gen_event)
   end
+
+  @doc """
+  Mutes client
+  """
+  @spec mute(%ClientsManager.Client.Client{}) :: %ClientsManager.Client.Client{}
+  def mute(client) do
+    client |> Map.put(:muted, true)
+  end
+
+  @doc """
+  Unmutes client
+  """
+  @spec unmute(%ClientsManager.Client.Client{}) ::
+        %ClientsManager.Client.Client{}
+  def unmute(client) do
+    client |> Map.put(:muted, false)
+  end
 end

@@ -22,9 +22,10 @@ defmodule ClientsManager.Messenger do
   @doc """
   Writes text message
   """
-  @spec message(pid, integer, String.t) :: integer
-  def message(redis_client, client_id, text) do
-    write(redis_client, client_id, %{type: :message, text: text})
+  @spec message(pid, integer, String.t, String.t) :: integer
+  def message(redis_client, client_id, text, status) do
+    write(redis_client, client_id,
+          %{type: :message, text: text, status: status})
   end
 
   @doc """
