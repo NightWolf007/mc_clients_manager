@@ -27,18 +27,19 @@ defmodule ClientsManager.Nekto.Manager do
   def prepare!(%{socket: socket} = client) do
     token = NektoClient.chat_token!
     Sender.auth!(socket, token)
-    Map.merge(client, %{token: token, search_options: default_search_options()})
+    Map.merge(client, %{token: token, search_options: nil})
   end
 
   @doc """
   Starts search
   Returns updated client
   """
-  @spec search!(%ClientsManager.Nekto.Client{}) ::
+  @spec search!(%ClientsManager.Nekto.Client{}, Map.t) ::
         %ClientsManager.Nekto.Client{}
-  def search!(%{socket: socket, search_options: search_options} = client) do
+  def search!(%{socket: socket} = client, options) do
+    search_options = SearchOptions.new(options)
     Sender.search_company!(socket, search_options)
-    client
+    Map.put(client, :search_options, search_options)
   end
 
   @doc """
@@ -80,15 +81,5 @@ defmodule ClientsManager.Nekto.Manager do
   @spec listen!(%ClientsManager.Nekto.Client{}, pid) :: none
   def listen!(%{socket: socket}, gen_event) do
     Receiver.listen(socket, gen_event)
-  end
-
-  defp default_search_options do
-    %SearchOptions{
-      my_sex: "W",
-      wish_sex: "M",
-      my_age_from: 18,
-      my_age_to: 21,
-      wish_age: ["0t17", "18t21", "22t25", "25t35", "36t100"]
-    }
   end
 end

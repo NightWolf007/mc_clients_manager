@@ -37,11 +37,11 @@ defmodule ClientsManager do
   @doc """
   Starts searching for client
   """
-  @spec search(client_id) :: :ok | :error
-  def search(client_id) do
+  @spec search(client_id, Map.t) :: :ok | :error
+  def search(client_id, options \\ %{}) do
     case Table.find(:clients, client_id) do
       {:ok, {client}} ->
-        Table.update(:clients, client_id, {Manager.search!(client)})
+        Table.update(:clients, client_id, {Manager.search!(client, options)})
         :ok
       _ ->
         :error
