@@ -42,9 +42,9 @@ defmodule ClientsManager.Client.Manager do
   """
   @spec search!(%ClientsManager.Client.Client{}) ::
         %ClientsManager.Client.Client{}
-  def search!(%{data: data, type: type} = client) do
+  def search!(%{data: data, type: type} = client, options \\ %{}) do
     client
-    |> Map.put(:data, Client.which_module(type, Manager).search!(data))
+    |> Map.put(:data, Client.which_module(type, Manager).search!(data, options))
   end
 
   @doc """
