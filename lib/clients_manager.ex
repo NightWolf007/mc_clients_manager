@@ -139,4 +139,18 @@ defmodule ClientsManager do
         :error
     end
   end
+
+  @doc """
+  Kicks client from dialog
+  """
+  @spec kick(client_id) :: :ok | :error
+  def kick(client_id) do
+    case Table.find(:clients, client_id) do
+      {:ok, {client}} ->
+        Table.update(:clients, client_id, {Manager.leave!(client)})
+        :ok
+      _ ->
+        :error
+    end
+  end
 end
